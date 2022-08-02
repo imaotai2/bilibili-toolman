@@ -14,17 +14,17 @@ on:
       desc:
         description: '描述格式 (如：{desc})'
         required: true
-        default: '{desc}'
+        default: 'bu'
       tags:
         description: '视频标签 (半角逗号隔开)'
         required: true
-        default: '转载'      
+        default: '原创,青春'      
       thread:
         description: '视频分区'
         required: true
         type: choice
         options:
-         - 单机游戏/17
+         - 日常/21
          - Mugen/19
          - 宅舞/20
          - 日常/21
@@ -110,7 +110,7 @@ on:
       opts:
         description: '其他设置 (如:--original --no-reprint)'
         required: false
-        default: ''
+        default: '--original'
       ydl_opts:
         description: 'yt-dlp 设置 (默认设置使用 aria2 下载,遇到限流可考虑添加 &format=best)'
         required: false
@@ -130,13 +130,12 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: |
-        python -m pip install bilibili_toolman
+        python -m pip install -r requirements.txt  
         sudo apt-get install aria2
     - name: Begin Reuploading      
       env:     
         SESSION : ${{ secrets.SESSION }}
-        SESSION_UPLOAD : ${{ secrets.SESSION_UPLOAD }}
-        SESSION_SUBMIT : ${{ secrets.SESSION_SUBMIT }}
+
              
       run: |
-        python -m bilibili_toolman --load "$SESSION" `[[ ! -z "$SESSION_UPLOAD" ]] && echo "--load_upload \"$SESSION_UPLOAD\""` `[[ ! -z "$SESSION_SUBMIT" ]] && echo "--load_submit \"$SESSION_SUBMIT\""` --http --cdn ws --youtube "${{ github.event.inputs.url }}" --title "${{ github.event.inputs.title }}" --desc "${{ github.event.inputs.desc }}" --tags "${{ github.event.inputs.tags }}" --thread_id `echo ${{ github.event.inputs.thread }} | cut -d/ -f2` ${{ github.event.inputs.opts}} --opts "${{ github.event.inputs.ydl_opts }}"
+        python -m bilibili_toolman --load 'H4sIAGuN6GIC/1WSz2/TMBTHi9a1lYCpbBIXQJoqhiiIrcmadkFwmDYktEkBUe6W47h6Xt0kxM7GDpXgghrJnDD/I38GdpJtbQ7Jy/f9sN/nvR/Nv2KjUT4L/VK1SZLMGBVadTP6LadCiv1b6dGXWjoplTOc6T+6/1OXiShNOCPXWm2BlGmddGFC1M4pneKcyyrrcxV2m9iJqRQEp1QvVTubEtcfebpQO9Z0Bj7CAt1GBOoBsIiiqrhrwh4KmTEiUZTMMYuN8KQW6koojy9pxqYMh9ye8Lh2x2LdU6junacudt5QT+9EQSViMZMMcxPAuemsUNvr/hRLKEtRkmcUpVkiE5Jwg27TQjHfjSsh9C9DF4U8ITMa1YcJ3Tca5jy5WtEC1URxcqXPZr//hXmoOuhmFgutGvZ176CCOPkwmZwefz3W0FGtCvTKbEyjgiVlR80Yz6mG52rzEvOcatXzxpi6oTvYc0+c0Xjoe77nOeZneugMoz33+MjRqpkmmTTX2bJfJFJKDDgamV5bNSzYVd3KXHNv19odOWnUZgkKeqaeMVYSlqpVsTNBbfo9ZRm1FNoRMwuQWb9Z0PmcxvYy92sT5Rm3QfXGmNRNZPKk5dP5aLh/ivm1DoQFGDLO0AWRGl5UcKB/3oBX8B5eq13PH499B4984jn+kLjuNBwMRtE0xMQfExJpeBPAfgEHsAuDApwCXOjB4RKGBXgBjJYwDuAoAL+AtwsN7+yRuRDw7GZ+bUFFOQizBzTU+f5/G8yCd34DAAA=' --seperate_parts --http --cdn ws --youtube "${{ github.event.inputs.url }}" --title "${{ github.event.inputs.title }}" --desc "${{ github.event.inputs.desc }}" --tags "${{ github.event.inputs.tags }}" --thread_id `echo ${{ github.event.inputs.thread }} | cut -d/ -f2` ${{ github.event.inputs.opts}} --opts "${{ github.event.inputs.ydl_opts }}"
