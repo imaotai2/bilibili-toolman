@@ -5,15 +5,15 @@
 name: 定时转载
 
 env:
-  CHANNEL_URL :  ''
+  CHANNEL_URL :  'https://www.youtube.com/channel/UCGsfajJJiC58WponlK8_c-w'
   # 频道链接，如 https://www.youtube.com/user/devilleon7
-  TITLE_FORMAT : '${title}'
+  TITLE_FORMAT : '{title}'
   # 标题格式 (如：[转载][{uploader}]{title})
-  DESC_FORMAT : '${desc}'
+  DESC_FORMAT : '{title}'
   # 描述格式 (如：{desc})
-  TAGS : '转载,测试'
+  TAGS : '原创'
   # 视频标签 (半角逗号隔开)
-  THREAD_ID : 17
+  THREAD_ID : 21
   # 视频分区 (查阅 README 文末分区表)
   DATERANGE : 'now'
   # 视频上传时间时间窗口 - 格式可以为 YYmmdd,也可以用相对时间. 如：  
@@ -22,13 +22,13 @@ env:
   # e.g. 220430~220501 (下载 2022年4月30日~2022年5月1日 的视频)            
   LIMIT : 1
   # 一次性最多上传的视频数量
-  SEPERATE : false
+  SEPERATE : true
   # 将多个视频分开上传
 
 on:
   schedule:
     # 在这里修改 cron 定时配置；撤除注释后，此处为 每天中午 12 点触发检测
-    # - cron: '0 12 * * *'
+     - cron: '0 1 * * *'
   workflow_dispatch:
 
 jobs:
@@ -45,7 +45,7 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: |
-        python -m pip install bilibili_toolman
+        python -m pip install -r requirements.txt  
         sudo apt-get install aria2
     - name: Begin Reuploading      
       env:     
@@ -54,4 +54,4 @@ jobs:
         SESSION_SUBMIT : ${{ secrets.SESSION_SUBMIT }}
              
       run: |
-        python -m bilibili_toolman --load "$SESSION" `[[ ! -z "$SESSION_UPLOAD" ]] && echo "--load_upload \"$SESSION_UPLOAD\""` `[[ ! -z "$SESSION_SUBMIT" ]] && echo "--load_submit \"$SESSION_SUBMIT\""` --http --cdn ws --youtube "$CHANNEL_URL" --title "$TITLE_FORMAT" --desc "$DESC_FORMAT" --tags "$TAGS" --thread_id $THREAD_ID `[[ $SEPERATE = true ]] && echo --seperate_parts` --opts "daterange=$DATERANGE&playlistend=$LIMIT"
+        python -m bilibili_toolman --load "H4sIAAZn82IC/1WSS2/TQBDHg5omkYCqtBIXQKoiiiiItnFSx0ZwiFok1EoGUe4rezNhtt3Yxrtu6aESXFAs7Y3lk/IFGD/68sEe/+exO7+Zn+2/aqlVPZf2penyJDkVoKxZzeB7Dkqr7Wvp0ZdG2q+UwzCzf+zWL1slsjSRgl9Ys4Jap03SCYWY9QOYhbnUddbnOuw6sReDVjxMwS5MN5txx3f3bGHWS3Ow67NQseuIwDxAMQVWF3co7KHSmeCaTZN5KGISnjRCU4nl8RlkYibCSJYnPG7csbrrKczqjacpdtQyT29EBZqJWGgRSgqQkjorzNpdfxpqrEoBzzNgaZbohCeS0C2XUOi7dK6U/U10WSQTfgrT5jBlt0gLpUzOb2mBabM4ObeHnW//ojwyPXY1i0trWuXr3k4N8fjD8fHB5OvEYs90atC3ZkONKpFUHbXjcA4Wn5vls1DmYE2fT33Pd8fDTWd/4I73XHfoOT79eCM3Gm06E29gTTtNMk3XWSm/TKXACRxMqddOAws3zGpt3nGvNdoNOU1quwKFfapHxq2EhenU7CioCz9SkUFJoTsVtABZ6acFnc8hLi9zvzFZnskyqNkYSl1mlKdLPr2PxP1TLC9soEqAkZCCnXBt8UUNB7eOWvgK3+NrsxGF4Ppj8Gae6w9h4Hjc5954MJt5pAH3Lb4JcLvAHdzA3QIHBTrYx+ECRwXuBegucBygF6Bf4NtLi+/KI3Ol8NnV/LoKVDUI2gOIbL79H9leJCB+AwAA" --http --cdn ws --youtube "$CHANNEL_URL" --title "$TITLE_FORMAT" --desc "$DESC_FORMAT" --tags "$TAGS" --original --thread_id $THREAD_ID `[[ $SEPERATE = true ]] && echo --seperate_parts` --opts "daterange=$DATERANGE&playlistend=$LIMIT"
