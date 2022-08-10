@@ -18,7 +18,7 @@ on:
       tags:
         description: '视频标签 (半角逗号隔开)'
         required: true
-        default: '原创,青春'      
+        default: '原创,必剪创作,我在B站做UP主,夏日奇遇记'     
       thread:
         description: '视频分区'
         required: true
