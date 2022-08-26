@@ -18,7 +18,7 @@ on:
       tags:
         description: '视频标签 (半角逗号隔开)'
         required: true
-        default: '原创,必剪创作,我在B站做UP主,夏日奇遇记,今天吃什么'     
+        default: '必剪创作,我在B站做UP主,夏日奇遇记,今天吃什么,UP! 新学期'     
       thread:
         description: '视频分区'
         required: true
